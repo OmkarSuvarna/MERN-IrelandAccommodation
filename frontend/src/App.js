@@ -1,30 +1,37 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
-import "./App.css";
+import './App.css';
+import FlatDetail from "./components/FlatDetail"
+import Header from "./components/Header"
+import Footer from "./components/Footer"
+import Home from "./components/Home"
+import Contact from "./components/Contact"
+import About from "./components/About"
+import Blog from "./components/Blog"
+import BlogDetail from "./components/BlogDetail"
+import {BrowserRouter as Router,Route} from "react-router-dom";
+import Login from './components/Login';
+// import Signup from './components/SignUp';
+import Profile from './components/Profile';
 
-import Landing from "./landing/pages/Landing";
-import MainNavigation from "./shared/components/Navigation/MainNavigation";
-import Post from "./posts/pages/Post";
-import AddPost from "./posts/pages/AddPost";
+ 
 
-const App = () => {
+function App() {
   return (
     <Router>
-      <MainNavigation />
-      <main>
-        <Routes>
-          <Route path="/" element={<Landing />}></Route>
-          <Route path="/p1/posts" element={<Post />}></Route>
-          <Route path="/post/new" element={<AddPost />}></Route>
-        </Routes>
-      </main>
+      <div className="App">
+        <Header/>
+        <Route path="/" exact component={Home}></Route>
+        <Route path="/contact"  component={Contact}></Route>
+        <Route path="/about"  component={About}></Route>
+        <Route path="/blog" exact component={Blog}></Route>
+        <Route path="/profile" exact component={Profile}></Route>
+        <Route path="/blog/:id"  component={BlogDetail}></Route>
+        <Route path="/login" component={Login}></Route>
+        {/* <Route path="/signup" component={Signup}></Route> */}
+        <Route path="/flat/:slug"  component={FlatDetail}></Route>
+        <Footer />
+      </div>
     </Router>
   );
-};
+}
 
 export default App;

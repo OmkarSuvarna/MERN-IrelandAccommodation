@@ -1,0 +1,62 @@
+[
+    {
+        "location": "Phibsborough, Dublin 07",
+        "accommodationType": "Permanent Accommodation",
+        "rent": "€500",
+        "deposit": "€500",
+        "billsIncluded": "No",
+        "availableFrom": "1st Dec",
+        "status": "Verified",
+        "image": "../images/1.jpg"
+    },
+    {
+        "location": "Ballsbridge, Dublin 04",
+        "accommodationType": "Permanent Accommodation",
+        "rent": "€650",
+        "deposit": "€650",
+        "billsIncluded": "Yes",
+        "availableFrom": "27 Dec - 30th Feb",
+        "status": "Not Verified",
+        "image": "../images/2.jpg"
+    },
+    {
+        "location": "Clontarf, Dublin 03",
+        "accommodationType": "Permanent Accommodation",
+        "rent": "€700",
+        "deposit": "€500",
+        "billsIncluded": "Yes",
+        "availableFrom": "15 Dec",
+        "status": "Not Verified",
+        "image": "../images/3.jpg"
+    },
+    {
+        "location": "Rathmines, Dublin 06",
+        "accommodationType": "Permanent Accommodation",
+        "rent": "€800",
+        "deposit": "€500",
+        "billsIncluded": "No",
+        "availableFrom": "30 Dec - 1 Jan",
+        "status": "Verified",
+        "image": "../images/4.jpg"
+    },
+    {
+        "location": "Ballsbridge, Dublin 04",
+        "accommodationType": "Permanent Accommodation",
+        "rent": "€600",
+        "deposit": "€500",
+        "billsIncluded": "Yes",
+        "availableFrom": "30 Dec",
+        "status": "Not Verified",
+        "image": "../images/5.jpg"
+    },
+    {
+        "location": "Citywest, Dublin 24",
+        "accommodationType": "Permanent Accommodation",
+        "rent": "€600",
+        "deposit": "€500",
+        "billsIncluded": "Yes",
+        "availableFrom": "30 Dec",
+        "status": "Not Verified",
+        "image": "../images/6.jpg"
+    }
+  ]
