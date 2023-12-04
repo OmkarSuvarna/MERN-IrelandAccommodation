@@ -5,7 +5,7 @@ const Subscribe = () => {
                 <div className="row">
                     <div className="col-lg-6">
                         <p className="title">Subscribe</p>
-                        <span className="sbs-description">Subscribe Description</span>
+                        <span className="sbs-description">Stay Updated: Latest Student Rentals Straight to Your Inbox!</span>
                     </div>
                     <div className="col-lg-6">
                         <div className="d-flex align-items-center justify-content-between w-100 h-100">

@@ -6,15 +6,15 @@ import References from "./References"
 import Subscribe from "./Subscribe"
 import BestFlatList from "./BestFlatList"
 
-const Home=()=>{
+const Home = () => {
     return (
         <React.Fragment>
-            <Banner/>
-            <FlatList/>
-            <BestFlatList/>
-            <Subscribe/>
-            <TeamList/>
-            <References/>
+            <Banner />
+            <FlatList />
+            {/* <BestFlatList /> */}
+            <Subscribe />
+            <TeamList />
+            {/* <References/> */}
         </React.Fragment>
     )
 }

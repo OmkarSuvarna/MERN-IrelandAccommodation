@@ -491,6 +491,17 @@
   margin-top: 5px;
   margin-bottom: 10px;
 }
+
+.contact .form-select{
+  border: 1px solid #e4e4e4;
+  width: 100%;
+  outline: none;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  background-color: whitesmoke;
+}
+
 .ta-contact{
   resize: none;
 }
@@ -593,10 +604,6 @@
   padding: 30px;
 }
 /* About End */
-
-
-
-
 
 /* Media Start */
 @media (max-width:500px) {
@@ -762,10 +769,10 @@
 }
 
 .big-datepicker input {
-  font-size: 16px; 
+  font-size: 14px;  
   height: 40px; 
-  width: 19rem; 
-  padding: 5px 10px;
+  padding: 5px 12px;
+  /* width: 19rem;  */
 }
 
 
@@ -779,7 +786,7 @@
   display: flex;
   flex-wrap: wrap;
   margin-top: 0.5rem;
-  justify-content: center;
+  justify-content: start;
 }
 
 .mydict input[type="radio"] {
@@ -803,7 +810,7 @@ label span {
   display: block;
   cursor: pointer;
   background-color: #fff;
-  padding: 0.375em .75em;
+  padding: 0.6em .75em;
   position: relative;
   margin-left: .0625em;
   box-shadow: 0 0 0 0.0625em #b5bfd9;
@@ -856,6 +863,7 @@ a:hover{
 }
 .qty-container .qty-btn-plus{
   margin-left: -1px;
+  margin-right: 4px;
 }
 .qty-container .qty-btn-minus{
   margin-right: -1px;
@@ -879,9 +887,9 @@ a:hover{
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   margin-right: 1rem;
-  margin-left: 1rem;
-  font-size: 1.5rem;
-  font-weight: 500;
+  /* margin-left: 1rem; */
+  font-size: 17px;
+  font-weight: 600;
   text-align: right;
 }
 
@@ -978,4 +986,237 @@ a:hover{
 
 .signup-link a {
   text-decoration: underline;
+}
+
+.currency-wrap{
+  position:relative;
+}
+
+.currency-code{
+  position:absolute;
+  left:8px;
+  top:15px;
+}
+
+.text-currency{
+  border: 1px solid #e4e4e4;
+  width: 100%;
+  outline: none;
+  padding: 10px 25px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  background-color: whitesmoke;
+}
+
+.nearbyLabel{
+  display: block;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.nearbyCheckbox{
+margin-top: 9px;
+}
+
+body {
+  background-color: #f9f9fa
+}
+
+.padding {
+  padding: 3rem !important
+}
+
+.user-card-full {
+  overflow: hidden;
+}
+
+.card {
+  border-radius: 5px;
+  -webkit-box-shadow: 0 1px 20px 0 rgba(69,90,100,0.08);
+  box-shadow: 0 1px 20px 0 rgba(69,90,100,0.08);
+  border: none;
+  margin-bottom: 30px;
+}
+
+.m-r-0 {
+  margin-right: 0px;
+}
+
+.m-l-0 {
+  margin-left: 0px;
+}
+
+.user-card-full .user-profile {
+  border-radius: 5px 0 0 5px;
+}
+
+.bg-c-lite-green {
+      background: -webkit-gradient(linear, left top, right top, from(#f29263), to(#ee5a6f));
+  background: linear-gradient(to right, #ee5a6f, #f29263);
+}
+
+.user-profile {
+  padding: 20px 0;
+}
+
+.card-block {
+  padding: 1.25rem;
+}
+
+.m-b-25 {
+  margin-bottom: 25px;
+}
+
+.img-radius {
+  border-radius: 5px;
+}
+
+
+
+h6 {
+  font-size: 14px;
+}
+
+.card .card-block p {
+  line-height: 25px;
+}
+
+@media only screen and (min-width: 1400px){
+p {
+  font-size: 14px;
+}
+}
+
+.card-block {
+  padding: 1.25rem;
+}
+
+.b-b-default {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.m-b-20 {
+  margin-bottom: 20px;
+}
+
+.p-b-5 {
+  padding-bottom: 5px !important;
+}
+
+.card .card-block p {
+  line-height: 25px;
+}
+
+.m-b-10 {
+  margin-bottom: 10px;
+}
+
+.text-muted {
+  color: #919aa3 !important;
+}
+
+.b-b-default {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.f-w-600 {
+  font-weight: 600;
+}
+
+.m-b-20 {
+  margin-bottom: 20px;
+}
+
+.m-t-40 {
+  margin-top: 20px;
+}
+
+.p-b-5 {
+  padding-bottom: 5px !important;
+}
+
+.m-b-10 {
+  margin-bottom: 10px;
+}
+
+.m-t-40 {
+  margin-top: 20px;
+}
+
+.user-card-full .social-link li {
+  display: inline-block;
+}
+
+.user-card-full .social-link li a {
+  font-size: 20px;
+  margin: 0 10px 0 0;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+
+.profile-head {
+  transform: translateY(5rem)
+}
+
+.cover {
+  /* background-image: url(https://images.unsplash.com/photo-1530305408560-82d13781b33a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80); */
+  background-image: url(../src/profileBackgrounds/temple_bar_med.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.profile-background {
+  background: rgb(54,68,101);
+  background: linear-gradient(0deg, rgba(54,68,101,1) 0%, rgba(228,228,228,1) 85%);
+  min-height: 100vh;
+  overflow-x:hidden;
+}
+
+.btn-outline-dark {
+  background-color: white;
+  color: black;
+  border-color: black;
+  font-weight: 600;
+}
+
+.btn-outline-dark:hover {
+  background-color: black;
+  color: white;
+  border-color: black;
+}
+
+.profile-btn{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-info{
+  display: flex;
+  align-items: start;
+}
+
+.profile-head{
+  display: flex;
+  align-items: start;
+  margin-bottom: 4rem;
+}
+
+.profile-cover{
+  display: flex;
+  flex-direction: column; 
+  justify-content: flex-end;
+  height: 28rem;
+}
+
+.page-content2{
+  padding-top: 2em;
+  padding-bottom: 2em;
 }

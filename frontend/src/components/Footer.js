@@ -8,7 +8,7 @@ const Footer = () => {
                     <div className="col-lg-3 col-md-6">
                         <i className="fas fa-home"></i>
                         <span className="footer-other-text d-block mt-3 mb-3">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+                            Find student-friendly rentals easily. Affordable options, close to campus, tailored for student life and budgets.
                         </span>
                         <div className="footer-social">
                             <div className="footer-social-item"><i className="fab fa-facebook"></i></div>
@@ -20,19 +20,19 @@ const Footer = () => {
                         <p className="footer-title">Menu</p>
                         <ul className="footer-ul">
                             <li>Home</li>
-                            <li>Blog</li>
-                            <li>About</li>
-                            <li>Contact</li>
+                            <li>Short Listed</li>
+                            <li>Post Accommodation</li>
+                            <li>Profile</li>
                         </ul>
                     </div>
                     <div className="col-lg-3 col-md-6">
                         <div>
-                            <p className="footer-title">Categories</p>
+                            <p className="footer-title">Extras</p>
                             <ul className="footer-ul">
-                                <li>Category 1</li>
-                                <li>Category 2</li>
-                                <li>Category 3</li>
-                                <li>Category 4</li>
+                                <li>Features</li>
+                                <li>Our Story</li>
+                                <li>Feedback</li>
+                                <li>Our Team</li>
                             </ul>
                         </div>
                     </div>
