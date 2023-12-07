@@ -11,7 +11,7 @@ import Login from './components/Login';
 import Profile from './components/Profile';
 import PostAccommodo from "./components/PostAccommodo"
 import References from './components/References';
-// import Signup from './components/SignUp';
+import Signup from './components/SignUp';
 // import Contact from "./components/Contact"
 
 
@@ -27,9 +27,9 @@ function App() {
         <Route path="/blog" exact component={Blog}></Route>
         <Route path="/profile" exact component={Profile}></Route>
         <Route path="/blog/:id" component={BlogDetail}></Route>
-        <Route path="/login" component={References}></Route>
+        <Route path="/login" component={Login}></Route>
         <Route path="/accommododetails/:slug" component={FlatDetail}></Route>
-        {/* <Route path="/signup" component={Signup}></Route> */}
+        <Route path="/signup" component={Signup}></Route>
         {/* <Route path="/contact"  component={Contact}></Route> */}
         <Route path="/contact" component={References}></Route>
         <Footer />

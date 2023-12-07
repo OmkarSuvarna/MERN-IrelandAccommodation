@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-// import { faCircleXmark, faCircleCheck, faHeart as farFaHeart } from '@fortawesome/free-solid-svg-icons';
-// import { faHeart as farFaHeart } from '@fortawesome/free-regular-svg-icons';
-// import React, { useState } from 'react';
-
+import React, { useState } from 'react';
+import { faHeart as fasFaHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as farFaHeart } from '@fortawesome/free-regular-svg-icons';
 
 const FlatItem = ({ data }) => {
   const handleClick = () => {
@@ -40,10 +39,16 @@ const FlatItem = ({ data }) => {
     return `${day}-${month}-${year}`;
   }
 
-  // const [isLiked, setIsLiked] = useState(false);
-  // const toggleHeart = () => {
-  //   setIsLiked(!isLiked);
-  // };
+  const [isHeartFilled, setIsHeartFilled] = useState(false);
+
+  const toggleHeart = () => {
+    setIsHeartFilled(!isHeartFilled);
+  };
+
+  const iconStyle = {
+    color: isHeartFilled ? 'red' : 'initial',
+    cursor: 'pointer'
+  };
 
   return (
     <div className="text-center col-lg-4 col-12 col-md-6 ">
@@ -54,13 +59,13 @@ const FlatItem = ({ data }) => {
         <div className="item-description">
           <div className="d-flex justify-content-between mb-3">
             <span className="item-price">{streetName}, {eircode}</span>
-            <i class="fas fa-solid fa-heart"></i>
-            {/* <button onClick={toggleHeart} style={{ border: 'none', background: 'none' }}>
-              <FontAwesomeIcon icon={faCircleCheck}
-                icon={isLiked ? fasFaHeart : farFaHeart}
-                color={isLiked ? 'red' : 'black'} />
-            </button> */}
-
+            {/* <i class="fas fa-solid fa-heart"></i> */}
+            <i onClick={toggleHeart} className="fas heart-shortlisted">
+              <FontAwesomeIcon
+                icon={isHeartFilled ? fasFaHeart : farFaHeart}
+                style={iconStyle}
+                onClick={toggleHeart} />
+            </i>
           </div>
           <div className="d-flex justify-content-between">
             <span className="item-title">{durationType} Accommodation</span>

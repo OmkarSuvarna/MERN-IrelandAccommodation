@@ -187,6 +187,7 @@ const PostAccommodo = () => {
         }));
     };
 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 

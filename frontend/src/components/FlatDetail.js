@@ -55,26 +55,50 @@ const FlatDetail = () => {
     ];
 
     const {
-        eircode,
         streetName,
         county,
-        accommodationType,
-        durationType,
-        fromDate,
-        toDate,
-        furnished,
-        lookingFor,
-        bedroom,
-        bath,
-        kitchen,
-        livingRoom,
-        nearby,
+        eircode,
         rent,
         deposit,
+        fromDate,
+        toDate,
+        accommodationType,
+        lookingFor,
+        livingRoomShared,
+        kitchenShared,
+        bedroom,
+        bath,
+        sutiableFor,
+        durationType,
+        furnished,
         billsIncluded,
-        roomSharing,
         bills,
+        roomSharing,
+        contactNumber,
+        email,
+        description,
+        colleges,
+        store,
+        fastFood,
+        roomSharingNumber
+
+        // durationType,
+        // furnished,
+        // kitchen,
+        // livingRoom,
+        // nearby,
+        // billsIncluded,
+        // roomSharing,
+        // bills,
     } = flatData;
+
+    function formatDate(isDateString) {
+        const dateObj = new Date(isDateString);
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed
+        const year = dateObj.getFullYear();
+        return `${day}-${month}-${year}`;
+    }
 
     return (
         <div className="flat-detail">
@@ -99,7 +123,7 @@ const FlatDetail = () => {
                                 Lorem ipsum dolor sit amet</p> */}
                             </div>
                             <div>
-                                <span className="fd-price">€650 / per month</span>
+                                <span className="fd-price">€{rent} / per month</span>
                             </div>
                         </div>
                         <ImageGallery flickThreshold={0.50} slideDuration={0} items={images} showNav={false} showFullscreenButton={false} showPlayButton={false} />
@@ -107,81 +131,72 @@ const FlatDetail = () => {
                             <div className="col-lg-8">
                                 <div className="fd-item">
                                     <h4>Description</h4>
-                                    <p>We have a self-contained studio apartment and you will have your own private entrance to the garden studio. The bedroom has a nice bed and storage space. The bathroom is complete with a toilet, sink and shower. The kitchen is fully equipped with modern conveniences. There's a washing machine, fridge and hob to cook your meals. There's a WiFi and Hard wired internet connection available.
-                                        The Location
-                                        The property is located in Rathfarnham, Dublin 14. We are close to the 15B and 15D bus routes. We are a 2 min walk from Rathfarnham Shopping Centre, supermarkets, pubs, cafes, pharmacies, local parks and banks. We are 30 mins by bus from TU Tallaght and Tallaght University Hospital. There are bus routes to UCD in 30 mins. We are also 20 mins by bus to Dublin City Centre so this is a great location for students and working professionals in Dublin.</p>
+                                    <p className="p-desc-detail">{description}</p>
                                 </div>
                                 <div className="fd-item fd-property-detail">
                                     <h4>Property Details</h4>
                                     <div className="row">
                                         <div className="col-lg-4">
                                             <span>Eircode: </span>
-                                            <span>D07 AB12</span>
+                                            <span>{eircode}</span>
                                         </div>
-                                        <div className="col-lg-4">
-                                            <span>2 Bedroom </span>
-                                            <span>1 Kitchen </span>
-                                            <span>2 Bath </span>
-                                        </div>
-                                        <div className="col-lg-4">
-                                            <span>Stuiable For: </span>
-                                            <span>Student</span>
-                                        </div>
-                                    </div>
-                                    <div className="row">
                                         <div className="col-lg-4">
                                             <span>Temporary Accommodation</span>
                                         </div>
                                         <div className="col-lg-4">
-                                            <span>Looking For: </span>
-                                            <span>Males only</span>
+                                            <span>{bedroom} Bedroom </span>
+                                            <span>{bath} Bath </span>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-lg-4">
+                                            <span>County: {county}</span>
                                         </div>
                                         <div className="col-lg-4">
-                                            <span>Room Sharing: </span>
-                                            <span>Yes</span>
+                                            <span>Looking For: {lookingFor}</span>
+                                        </div>
+                                        <div className="col-lg-4">
+                                            <span>Kitchen Shared: </span>
+                                            <span>{kitchenShared ? "Yes" : "No"}</span>
                                         </div>
 
                                     </div>
                                     <div className="row">
-                                        <div className="col-lg-6">
-                                            <span>From 1st December</span>
-                                            <span>To 30th December</span>
+                                        <div className="col-lg-4">
+                                            <span>Sutiable For: {sutiableFor}</span>
                                         </div>
-                                        <div className="col-lg-6">
-                                            <span>Room Shared Between: </span>
-                                            <span>2 People</span>
+                                        <div className="col-lg-4">
+                                            <span>Room Shared Between: {roomSharingNumber}</span>
+                                        </div>
+                                        <div className="col-lg-4">
+                                            <span>Living Room Shared: </span>
+                                            <span>{livingRoomShared ? "Yes" : "No"}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="fd-item fd-features">
                                     <h4>Near By</h4>
                                     <div className="row">
-                                        <div className="col-lg-4">
-                                            <FontAwesomeIcon icon={faShoppingCart} />
-                                            <span>LIDL</span>
-                                        </div>
-                                        <div className="col-lg-4">
-                                            <FontAwesomeIcon icon={faShoppingCart} />
-                                            <span>ALDI</span>
-                                        </div>
-                                        <div className="col-lg-4">
-                                            <FontAwesomeIcon icon={faShoppingCart} />
-                                            <span>Tesco</span>
-                                        </div>
+                                        {colleges.length > 0 && colleges.map((college, index) => (
+                                            <div key={index} className="col-lg-4">
+                                                <FontAwesomeIcon icon={faGraduationCap} />
+                                                <span>{college}</span>
+                                            </div>
+                                        ))}
                                     </div>
                                     <div className="row">
-                                        <div className="col-lg-4">
-                                            <FontAwesomeIcon icon={faBurger} />
-                                            <span>Mcdonald's</span>
-                                        </div>
-                                        <div className="col-lg-4">
-                                            <FontAwesomeIcon icon={faStore} />
-                                            <span>Dunnes</span>
-                                        </div>
-                                        <div className="col-lg-4">
-                                            <FontAwesomeIcon icon={faGraduationCap} />
-                                            <span>Dublin Business School</span>
-                                        </div>
+                                        {store.length > 0 && store.map((store, index) => (
+                                            <div key={index} className="col-lg-4">
+                                                <FontAwesomeIcon icon={faShoppingCart} />
+                                                <span>{store}</span>
+                                            </div>
+                                        ))}
+                                        {fastFood.length > 0 && fastFood.map((fastFood, index) => (
+                                            <div key={index} className="col-lg-4">
+                                                <FontAwesomeIcon icon={faBurger} />
+                                                <span>{fastFood}</span>
+                                            </div>
+                                        ))}
                                     </div>
                                     {/* <div className="row">
                                         <div className="col-lg-4">
@@ -205,6 +220,27 @@ const FlatDetail = () => {
                             </div>
                             <div className="col-lg-4">
                                 <div className="fd-sidebar-item">
+                                    <div>
+                                        <h4>Dates Available: <br /><span className="additionalInfo-descp">From {formatDate(fromDate)} To<br /> {formatDate(toDate)}</span></h4>
+                                    </div>
+                                    <div>
+                                        <h4>Rent: <span className="additionalInfo-descp">€{rent}</span></h4>
+                                    </div>
+                                    <div>
+                                        <h4>Deposit: <span className="additionalInfo-descp">€{deposit}</span></h4>
+                                    </div>
+                                </div>
+                                {!billsIncluded && (
+                                    <div className="fd-sidebar-item">
+                                        <h4>Additional Bills</h4>
+                                        <ul className="category-ul">
+                                            {bills.map((bill, index) => (
+                                                <li key={index}>{bill}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                <div className="fd-sidebar-item">
                                     <h4>Recently Added</h4>
                                     <div className="recently-item">
                                         <img src={image4} alt="detail" width="50px" />
@@ -219,28 +255,6 @@ const FlatDetail = () => {
                                         <span>Ballsbridge, Dublin 04</span>
                                     </div>
                                 </div>
-                                <div className="fd-sidebar-item">
-                                    <h4>Bills Included</h4>
-                                    <ul className="category-ul">
-                                        <li>Electricity</li>
-                                        <li>Wifi</li>
-                                    </ul>
-                                </div>
-                                {/* <div className="fd-sidebar-item">
-                                    <h4>Recently Added</h4>
-                                    <div className="recently-item">
-                                        <img src="/img/product1.jpeg" alt="detail" width="50px" />
-                                        <span>Lorem Ipsum Dolor</span>
-                                    </div>
-                                    <div className="recently-item">
-                                        <img src="/img/product1.jpeg" alt="detail" width="50px" />
-                                        <span>Lorem Ipsum Dolor</span>
-                                    </div>
-                                    <div className="recently-item">
-                                        <img src="/img/product1.jpeg" alt="detail" width="50px" />
-                                        <span>Lorem Ipsum Dolor</span>
-                                    </div>
-                                </div> */}
                             </div>
                         </div>
                     </div>
