@@ -5,14 +5,14 @@ import '../App.css';
 const ProfileCards = ({ data }) => {
     const { location, accommodationType, rent, deposit, billsIncluded, availableFrom, status, image } = data;
     return (
-        <div className="text-center col-lg-6 col-12 col-md-6 ">
+        <div className="text-center col-lg-6 col-12 col-md-6 " style={{ fontSize: '14px' }}>
             <div className="item">
                 <div className="item-image">
                     <img className="img-fluid" src={image} alt="flat" />
                 </div>
                 <div className="item-description">
                     <div className="d-flex justify-content-between mb-3">
-                        <span className="item-price">{location}</span>
+                        <span className="item-price" style={{ fontSize: '16px', fontWeight: 600 }}>{location}</span>
                         <i class="fas fa-regular fa-heart"></i>
                     </div>
                     <div className="d-flex justify-content-between">
@@ -32,7 +32,7 @@ const ProfileCards = ({ data }) => {
               <i className="fas fa-check-circle"></i>{" "}
               <span>Lorem ipsum dolor</span>
               </div> */}
-                        <span className="item-title">{availableFrom}</span>
+                        <span className="item-title" style={{ fontSize: '14px' }}>{availableFrom}</span>
                         <div>
                             <i className="fas fa-check-circle"></i> <span> {status} </span>
                         </div>

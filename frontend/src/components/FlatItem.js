@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCircleXmark, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+// import { faCircleXmark, faCircleCheck, faHeart as farFaHeart } from '@fortawesome/free-solid-svg-icons';
+// import { faHeart as farFaHeart } from '@fortawesome/free-regular-svg-icons';
+// import React, { useState } from 'react';
 
 
 const FlatItem = ({ data }) => {
+  const handleClick = () => {
+    localStorage.setItem('flatId', data._id);
+  };
+
   const {
     eircode,
     streetName,
@@ -32,6 +39,12 @@ const FlatItem = ({ data }) => {
     const year = dateObj.getFullYear();
     return `${day}-${month}-${year}`;
   }
+
+  // const [isLiked, setIsLiked] = useState(false);
+  // const toggleHeart = () => {
+  //   setIsLiked(!isLiked);
+  // };
+
   return (
     <div className="text-center col-lg-4 col-12 col-md-6 ">
       <div className="item">
@@ -41,10 +54,16 @@ const FlatItem = ({ data }) => {
         <div className="item-description">
           <div className="d-flex justify-content-between mb-3">
             <span className="item-price">{streetName}, {eircode}</span>
-            <i class="fas fa-regular fa-heart"></i>
+            <i class="fas fa-solid fa-heart"></i>
+            {/* <button onClick={toggleHeart} style={{ border: 'none', background: 'none' }}>
+              <FontAwesomeIcon icon={faCircleCheck}
+                icon={isLiked ? fasFaHeart : farFaHeart}
+                color={isLiked ? 'red' : 'black'} />
+            </button> */}
+
           </div>
           <div className="d-flex justify-content-between">
-            <span className="item-title">{accommodationType} Accommodation</span>
+            <span className="item-title">{durationType} Accommodation</span>
             <span class="card-icon-size">{bedroom}   <i class="fas fa-solid fa-bed"></i>     {bath}   <i class="fas fa-solid fa-bath"></i>
             </span>
           </div>
@@ -65,10 +84,15 @@ const FlatItem = ({ data }) => {
           </div>
           <div className="item-icon d-flex alig-items-center justify-content-between">
             <span className="item-title">Dates: {formatDate(fromDate)} - {formatDate(toDate)}</span>
-            <Link to={`/flat/${data}`} className="item-title">
+            {/* <Link to={`/accommododetails/${data._id}`} className="item-title"> */}
+            <Link to={{
+              pathname: `/accommododetails/${data._id}`,
+              state: { data }
+            }}
+              className="item-title"
+              onClick={handleClick}>
               <button className="btn btn-detail">View</button>
             </Link>
-
           </div>
         </div>
       </div>

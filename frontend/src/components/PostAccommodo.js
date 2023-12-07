@@ -4,14 +4,16 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../App.css';
 
 
-const DatePickerComponent = () => {
+const DatePickerComponent = ({ selectedDate, onDateChange }) => {
     const [startDate, setStartDate] = useState(null);
 
     return (
         <div className="big-datepicker">
             <DatePicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
+                // selected={startDate}
+                // onChange={(date) => setStartDate(date)}
+                selected={selectedDate}
+                onChange={onDateChange}
                 placeholderText="Select a date"
             />
         </div>
@@ -19,11 +21,6 @@ const DatePickerComponent = () => {
 };
 
 const PostAccommodo = () => {
-    // const [billsIncluded, setBillsIncluded] = useState(null);
-    const [roomSharing, setroomSharing] = useState(null);
-
-    const [additionalFieldsVisible, setAdditionalFieldsVisible] = useState(false);
-
     const [formFields, setFormFields] = useState({
         streetName: '',
         county: 'Dublin',
@@ -36,20 +33,21 @@ const PostAccommodo = () => {
         lookingFor: '',
         livingRoomShared: null,
         kitchenShared: null,
-        bedroomCount: 0,
-        bathCount: 0,
+        bedroom: 0,
+        bath: 0,
         sutiableFor: '',
         durationType: '',
         furnished: null,
         billsIncluded: null,
-        additionalBills: [],
-        roomSharing: false,
+        bills: [],
+        roomSharing: null,
         contactNumber: '',
         email: '',
         description: '',
         colleges: [],
         store: [],
-        fastFood: []
+        fastFood: [],
+        roomSharingNumber: 0
     });
 
     const handleInputChange = (e) => {
@@ -122,15 +120,72 @@ const PostAccommodo = () => {
         });
     };
 
-    const setBillsIncluded = (value) => {
+    const [roomSharing, setRoomSharing] = useState(null);
+    const handleRoomSharing = (e) => {
+        const { name, value } = e.target;
+        setRoomSharing(value);
         setFormFields({
             ...formFields,
-            billsIncluded: value
+            [name]: value === 'Yes',
         });
-
-        setAdditionalFieldsVisible(value === 'No');
     };
 
+    const [billsIncluded, setBillsIncluded] = useState(null);
+    const handleBillsIncluded = (e) => {
+        const { name, value } = e.target;
+        setBillsIncluded(value);
+        setFormFields({
+            ...formFields,
+            [name]: value === 'Yes',
+        });
+    };
+
+    const handleAdditionalBillsCheckbox = (e) => {
+        const { value, checked } = e.target;
+        setFormFields(prevState => {
+            if (checked) {
+                return {
+                    ...prevState,
+                    bills: [...prevState.bills, value]
+                };
+            } else {
+                return {
+                    ...prevState,
+                    bills: prevState.bills.filter(item => item !== value)
+                };
+            }
+        });
+    };
+
+    const handleFromDateChange = (date) => {
+        setFormFields(prevFormFields => ({ ...prevFormFields, fromDate: date }));
+    };
+
+    const handleToDateChange = (date) => {
+        setFormFields(prevFormFields => ({ ...prevFormFields, toDate: date }));
+    };
+
+    const handleBedroomChange = (increment) => {
+        setFormFields(prevState => ({
+            ...prevState,
+            bedroom: increment ? prevState.bedroom + 1 : Math.max(prevState.bedroom - 1, 0)
+        }));
+    };
+
+    const handleBathChange = (increment) => {
+        setFormFields(prevState => ({
+            ...prevState,
+            bath: increment ? prevState.bath + 1 : Math.max(prevState.bath - 1, 0)
+        }));
+    };
+
+    const handleRoomChange = (event, field) => {
+        const value = parseInt(event.target.value, 10);
+        setFormFields(prevState => ({
+            ...prevState,
+            [field]: isNaN(value) ? 0 : Math.max(value, 0) // Ensures only numbers and non-negative values
+        }));
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -267,11 +322,17 @@ const PostAccommodo = () => {
                                     </div>
                                     <div className="col-lg-2">
                                         <label className="mb-2">From Date</label>
-                                        <DatePickerComponent />
+                                        <DatePickerComponent
+                                            selectedDate={formFields.fromDate}
+                                            onDateChange={handleFromDateChange}
+                                        />
                                     </div>
                                     <div className="col-lg-2">
                                         <label className="mb-2">To Date</label>
-                                        <DatePickerComponent />
+                                        <DatePickerComponent
+                                            selectedDate={formFields.toDate}
+                                            onDateChange={handleToDateChange}
+                                        />
                                     </div>
 
                                     <div class="mydict col-lg-4">
@@ -382,16 +443,46 @@ const PostAccommodo = () => {
                                         <label className="mb-2">Number of Rooms</label>
                                         <div className='qty-flex'>
                                             <span>Bedroom</span>
-                                            <div class="qty-container">
-                                                <button class="qty-btn-minus btn-light" type="button"><i class="fa fa-minus"></i></button>
-                                                <input type="text" name="qty" value="0" class="input-qty" />
-                                                <button class="qty-btn-plus btn-light" type="button"><i class="fa fa-plus"></i></button>
+                                            <div className="qty-container">
+                                                <button
+                                                    className="qty-btn-minus btn-light"
+                                                    type="button"
+                                                    onClick={() => handleBedroomChange(false)}>
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <input
+                                                    type="text"
+                                                    name="bedroom"
+                                                    value={formFields.bedroom}
+                                                    className="input-qty"
+                                                    onChange={(e) => handleRoomChange(e, 'bedroom')} />
+                                                <button
+                                                    className="qty-btn-plus btn-light"
+                                                    type="button"
+                                                    onClick={() => handleBedroomChange(true)}>
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
                                             </div>
                                             <span>Bath</span>
-                                            <div class="qty-container">
-                                                <button class="qty-btn-minus btn-light" type="button"><i class="fa fa-minus"></i></button>
-                                                <input type="text" name="qty" value="0" class="input-qty" />
-                                                <button class="qty-btn-plus btn-light" type="button"><i class="fa fa-plus"></i></button>
+                                            <div className="qty-container">
+                                                <button
+                                                    className="qty-btn-minus btn-light"
+                                                    type="button"
+                                                    onClick={() => handleBathChange(false)}>
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <input
+                                                    type="text"
+                                                    name="bath"
+                                                    value={formFields.bath}
+                                                    className="input-qty"
+                                                    onChange={(e) => handleRoomChange(e, 'bath')} />
+                                                <button
+                                                    className="qty-btn-plus btn-light"
+                                                    type="button"
+                                                    onClick={() => handleBathChange(true)}>
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -461,14 +552,14 @@ const PostAccommodo = () => {
                                                 <input type="radio"
                                                     name="billsIncluded"
                                                     value="Yes"
-                                                    onChange={() => setBillsIncluded('Yes')} />
+                                                    onChange={handleBillsIncluded} />
                                                 <span style={{ width: '5rem', display: 'inline-block' }}>Yes</span>
                                             </label>
                                             <label>
                                                 <input type="radio"
                                                     name="billsIncluded"
                                                     value="No"
-                                                    onChange={() => setBillsIncluded('No')} />
+                                                    onChange={handleBillsIncluded} />
                                                 <span style={{ width: '5rem', display: 'inline-block' }}>No</span>
                                             </label>
                                         </div>
@@ -477,11 +568,17 @@ const PostAccommodo = () => {
                                         <label className="mb-2">Room Sharing?</label>
                                         <div>
                                             <label>
-                                                <input type="radio" name="roomSharing" value="Yes" onChange={() => setroomSharing('Yes')} />
+                                                <input type="radio"
+                                                    name="roomSharing"
+                                                    value="Yes"
+                                                    onChange={handleRoomSharing} />
                                                 <span style={{ width: '5rem', display: 'inline-block' }}>Yes</span>
                                             </label>
                                             <label>
-                                                <input type="radio" name="roomSharing" value="No" onChange={() => setroomSharing('No')} />
+                                                <input type="radio"
+                                                    name="roomSharing"
+                                                    value="No"
+                                                    onChange={handleRoomSharing} />
                                                 <span style={{ width: '5rem', display: 'inline-block' }}>No</span>
                                             </label>
                                         </div>
@@ -503,25 +600,43 @@ const PostAccommodo = () => {
                                         </div>
                                     </div>
 
-                                    {additionalFieldsVisible && (
+                                    {billsIncluded === 'No' && (
                                         <div className="col-lg-4">
                                             <div className="row" style={{ paddingLeft: '20px' }}>
                                                 <label className="mb-2">Additional Bills</label>
                                                 <div class="col form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="checkbox"
+                                                        id="electricity"
+                                                        name="electricity"
+                                                        value="Electricity"
+                                                        onChange={handleAdditionalBillsCheckbox} />
+                                                    <label className="form-check-label" htmlFor="electricity">
                                                         Electricity
                                                     </label>
                                                 </div>
                                                 <div class="col form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        id="heating"
+                                                        name="heating"
+                                                        value="Heating"
+                                                        onChange={handleAdditionalBillsCheckbox} />
+                                                    <label className="form-check-label" htmlFor="heating">
                                                         Heating
                                                     </label>
                                                 </div>
                                                 <div class="col form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="checkbox"
+                                                        id="wifi"
+                                                        name="wifi"
+                                                        value="Wifi"
+                                                        onChange={handleAdditionalBillsCheckbox} />
+                                                    <label className="form-check-label" htmlFor="wifi">
                                                         Wifi
                                                     </label>
                                                 </div>
@@ -529,8 +644,12 @@ const PostAccommodo = () => {
                                         </div>)}
                                     {roomSharing === 'Yes' && (
                                         <div className="col-lg-2">
-                                            <label>Rent</label>
-                                            <input type="number" className="inp-contact" />
+                                            <label>Room Shared Between</label>
+                                            <input type="number"
+                                                className="inp-contact"
+                                                name="roomSharingNumber"
+                                                value={formFields.roomSharingNumber}
+                                                onChange={handleInputChange} />
                                         </div>)}
                                 </div>
                             </div>

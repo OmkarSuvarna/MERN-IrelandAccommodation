@@ -28,9 +28,10 @@ function App() {
         <Route path="/profile" exact component={Profile}></Route>
         <Route path="/blog/:id" component={BlogDetail}></Route>
         <Route path="/login" component={References}></Route>
-        <Route path="/flat/:slug" component={FlatDetail}></Route>
+        <Route path="/accommododetails/:slug" component={FlatDetail}></Route>
         {/* <Route path="/signup" component={Signup}></Route> */}
         {/* <Route path="/contact"  component={Contact}></Route> */}
+        <Route path="/contact" component={References}></Route>
         <Footer />
       </div>
     </Router>
