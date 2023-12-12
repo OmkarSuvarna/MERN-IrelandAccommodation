@@ -1,14 +1,31 @@
 import { useEffect, useState } from "react"
 import banner from "../banner.jpg"
 import { Link } from "react-router-dom";
-import image1 from "../images/templebar_large.jpg"
+import image1 from "../images/banner/templebar_large.jpg"
+import image2 from "../images/banner/image2.jpg"
+import image3 from "../images/banner/image3.jpg"
+import image4 from "../images/banner/image5.jpg"
 
 const Banner = () => {
+
+    const images = [image1, image2, image3];
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+        }, 3000); // Change image every 3 seconds
+
+        return () => clearInterval(intervalId);
+    }, []);
+
+
+    ///
     const [search, setSearch] = useState();
     const [find, setFind] = useState([]);
     const [word, setWord] = useState("");
     useEffect(() => {
-        setSearch(["a","b","test", "mb"])
+        setSearch(["a", "b", "test", "mb"])
     }, [])
     const findSearch = (e) => {
         setWord(e.target.value)
@@ -30,7 +47,16 @@ const Banner = () => {
         }
     }
     return (
-        <div className="banner d-flex align-items-center" style={{ backgroundImage: `url(${image1})` }}>
+        <div className="banner d-flex align-items-center"
+        // style={{ backgroundImage: `url(${image1})` }}
+        >
+            {images.map((img, index) => (
+                <div
+                    key={index}
+                    className={`slide-image ${index === currentImageIndex ? 'active-slide' : ''}`}
+                    style={{ backgroundImage: `url(${img})` }}
+                />
+            ))}
             <div className="bg-custom">
                 <div className="container">
                     <div className="row">

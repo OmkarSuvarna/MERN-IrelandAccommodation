@@ -75,8 +75,8 @@ const FlatItem = ({ data }) => {
           <div className="d-flex justify-content-between mb-3">
           </div>
           <div className="d-flex justify-content-between mb-3">
-            <span className="item-title">Rent: {rent}</span>
-            <span className="item-title"> Deposit: {deposit}</span>
+            <span className="item-title">Rent: €{rent}</span>
+            <span className="item-title"> Deposit: €{deposit}</span>
             {/* <i className="fas fa-check-circle"></i> <span></span> */}
             {/* <span className="item-title">Bills Included: {billsIncluded}</span> */}
             <span>

@@ -11,14 +11,18 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.2",
+    "jquery": "^3.7.1",
+    "jquery-ui": "^1.13.2",
     "keep-react": "^1.0.2",
     "react": "^17.0.1",
     "react-datepicker": "^4.23.0",
     "react-dom": "^17.0.1",
+    "react-google-recaptcha": "^3.1.0",
     "react-image-gallery": "^1.2.7",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "react-slick": "^0.28.1",
+    "react-slider": "^2.0.6",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

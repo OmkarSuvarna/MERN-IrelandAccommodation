@@ -1,33 +1,43 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebookF } from '@fortawesome/free-brands-svg-icons';
-
-import '../App.css'
+import '../App.css';
+import { useAuth } from './AuthContext';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [recaptchaValue, setRecaptchaValue] = useState('');
+
+  const auth = useAuth();
+  const history = useHistory();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    if (!recaptchaValue) {
+      setError('Please complete the reCAPTCHA');
+      return;
+    }
+
     try {
-      // Make an API request to your backend for authentication
-      const response = await fetch('/api/login', {
+      const response = await fetch('http://localhost:5000/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, recaptchaValue }),
       });
 
       if (response.ok) {
-        // Handle successful login (e.g., redirect or update state)
+        const userData = await response.json();
+        auth.login(userData);
         console.log('Login successful');
+        history.push('/');
       } else {
-        // Handle authentication error
         const data = await response.json();
         setError(data.message || 'Login failed');
       }
@@ -41,22 +51,40 @@ const Login = () => {
       <div className="form login">
         <div className="form-content">
           <header>Login</header>
-          <form>
+          <form onSubmit={handleLogin}>
             <div className="field input-field">
-              <input type="email" placeholder="Email" className="input" />
+              <input
+                type="email"
+                placeholder="Email"
+                className="input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} />
             </div>
 
             <div className="field input-field">
-              <input type="password" placeholder="Password" className="password" />
+              <input
+                type="password"
+                placeholder="Password"
+                className="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} />
               <i className='bx bx-hide eye-icon'></i>
             </div>
+
+            {error && <div className="error">{error}</div>}
 
             <div className="form-link">
               <a href="#" className="forgot-pass">Forgot password?</a>
             </div>
+            <div className='recaptcha-login'>
+              <ReCAPTCHA
+                sitekey="6Le6AyEpAAAAAM_4wftidRsLEXv4YVJ6vHpapwVI"
+                onChange={(value) => setRecaptchaValue(value)}
+              />
+            </div>
 
             <div className="field button-field">
-              <button>Login</button>
+              <button type="submit">Login</button>
             </div>
           </form>
 
@@ -84,38 +112,6 @@ const Login = () => {
         </div>
       </div>
     </section>
-
-    // <form class="form">
-    //   <p class="form-title">Sign in to your account</p>
-    //   <div class="input-container">
-    //     <input placeholder="Enter email" type="email" />
-    //     <span>
-    //       <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    //         <path d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
-    //       </svg>
-    //     </span>
-    //   </div>
-    //   <div class="input-container">
-    //     <input placeholder="Enter password" type="password" />
-
-    //     <span>
-    //       <svg stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    //         <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
-    //         <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
-    //       </svg>
-    //     </span>
-    //   </div>
-    //   <button class="submit" type="submit">
-    //     Sign in
-    //   </button>
-
-    //   <p class="signup-link">
-    //     No account?
-    //     {/* <a href="">Sign up</a> */}
-    //     <Link to="/signup">Register</Link>
-    //   </p>
-    // </form>
-
   );
 };
 

@@ -1,3 +1,6 @@
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 import BlogItem from "./BlogItem"
 
 
@@ -52,6 +55,14 @@ const Dummyitems = [
 ]
 
 const Blog = () => {
+    const { user } = useAuth();
+    const history = useHistory();
+
+    useEffect(() => {
+        if (!user) {
+            history.push('/login');
+        }
+    }, [user, history]);
     return (
         <section className="blog">
             <div className="page-top">

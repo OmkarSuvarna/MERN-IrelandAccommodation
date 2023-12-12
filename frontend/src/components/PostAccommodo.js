@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../App.css';
-
 
 const DatePickerComponent = ({ selectedDate, onDateChange }) => {
     const [startDate, setStartDate] = useState(null);
@@ -21,6 +22,16 @@ const DatePickerComponent = ({ selectedDate, onDateChange }) => {
 };
 
 const PostAccommodo = () => {
+
+    const { user } = useAuth();
+    const history = useHistory();
+
+    useEffect(() => {
+        if (!user) {
+            history.push('/login');
+        }
+    }, [user, history]);
+
     const [formFields, setFormFields] = useState({
         streetName: '',
         county: 'Dublin',

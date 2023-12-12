@@ -1,7 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from './AuthContext';
+import { useHistory } from 'react-router-dom';
 
 const Header = () => {
+  const { user, logout } = useAuth();
+  const history = useHistory();
+  const handleLogout = () => {
+    logout(() => history.push('/'));
+  };
   return (
     <div className="header">
       <div className="container">
@@ -32,7 +39,7 @@ const Header = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/blog">
+                  <Link className="nav-link" to="/shortlisted">
                     Short Listed
                   </Link>
                 </li>
@@ -41,17 +48,29 @@ const Header = () => {
                     Post Accommodation
                   </Link>
                 </li>
-
+                {user && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/profile">
+                      Profile
+                    </Link>
+                  </li>
+                )}
                 <li className="nav-item">
-                  <Link className="nav-link" to="/profile">
-                    Profile
-                  </Link>
+                  {user ? (
+                    <button className="nav-link btn btn-link" onClick={handleLogout}>
+                      Logout
+                    </button>
+                  ) : (
+                    <Link className="nav-link" to="/login">
+                      Login
+                    </Link>
+                  )}
                 </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/login">
-                    Login
-                  </Link>
-                </li>
+                {/* <li className="nav-item">
+                    <Link className="nav-link" to="/login">
+                      Login
+                    </Link>
+                  </li> */}
                 {/* <li className="nav-item">
                   <Link className="nav-link" to="#">
                     Category <i className="fas fa-chevron-down"></i>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import '../App.css';
+import { useHistory } from 'react-router-dom';
+
 
 
 const Signup = () => {
@@ -8,8 +9,7 @@ const Signup = () => {
   // const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  // const navigate = useNavigate();
+  const history = useHistory();
 
   const [formFields, setFormFields] = useState({
     fname: '',
@@ -71,8 +71,7 @@ const Signup = () => {
       const result = await response.json();
       console.log('Success:', result);
 
-      // navigate('/login')
-
+      history.push('/login');
     } catch (error) {
       console.error('Error during signup:', error.message);
       setError(error.message);
