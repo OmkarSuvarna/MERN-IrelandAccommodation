@@ -1,10 +1,11 @@
-import React from "react";
+// import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import '../App.css';
 import BlogItem from "./BlogItem"
 import ProfileCards from "./ProfileCards"
+import FlatItem from "./FlatItem2"
 import { useAuth } from './AuthContext';
-
 
 import image1 from '../images/1.jpg';
 import image2 from '../images/2.jpg';
@@ -12,9 +13,6 @@ import image3 from '../images/3.jpg';
 import image4 from '../images/4.jpg';
 import image5 from '../images/5.jpg';
 import image6 from '../images/6.jpg';
-
-
-
 
 
 const Dummyitems = [
@@ -64,7 +62,65 @@ const Dummyitems = [
 const Profile = () => {
 
   const { user } = useAuth();
-  console.log(user);
+  const { fname, lname, contact, email, _id } = user.user;
+
+  // const [userData, setUserData] = useState(null);
+  const [userPosts, setUserPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const response = await fetch(`http://localhost:5000/api/users/65722ef668cf455dc626deed`);
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+  //       const data = await response.json();
+  //       setUserData(data);
+  //     } catch (error) {
+  //       console.error('Failed to fetch user data:', error);
+  //       setError(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   if (user) {
+  //     fetchUserData();
+  //   }
+  // }, [user]);
+
+  const handleDelete = (postId) => {
+    setUserPosts(prevPosts => prevPosts.filter(post => post._id !== postId));
+  };
+
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      try {
+        // Fetch posts data from API
+        const response = await fetch('http://localhost:5000/api/accommodations');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(_id);
+        const filteredPosts = data.filter(post => post.userID === _id);
+        setUserPosts(filteredPosts);
+      } catch (error) {
+        console.error('Failed to fetch user posts:', error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserPosts();
+  }, [_id]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
 
   return (
     <section className="contact profile-background">
@@ -78,9 +134,9 @@ const Profile = () => {
             <div className="other-profile-section">
               <div className="personal-info-profile">
                 <h4 className="profile-font">Personal Info</h4>
-                <p className="subprofile-font">John Doe</p>
-                <p className="subprofile-font">Contact: 0899877123</p>
-                <p className="subprofile-font">Email: john.doe@gmail.com</p>
+                <p className="subprofile-font">{fname} {lname}</p>
+                <p className="subprofile-font">Contact: {contact}</p>
+                <p className="subprofile-font">Email: {email}</p>
               </div>
               <div>
                 <h4 className="profile-font">About</h4>
@@ -92,9 +148,17 @@ const Profile = () => {
 
           <div className="profile-body-cards">
             <h2>Post History</h2>
-            <div className="profile-down-cards" >
+            {/* <div className="profile-down-cards" >
               {Dummyitems.map((item, index) => (
                 <ProfileCards key={index} data={item} />
+              ))}
+            </div> */}
+            <div className="profile-down-cards" >
+              {userPosts.map((item, index) => (
+                <FlatItem
+                  key={index}
+                  data={item}
+                  onDelete={handleDelete} />
               ))}
             </div>
           </div>

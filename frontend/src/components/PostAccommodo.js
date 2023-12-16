@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../App.css';
+import MapComponent from './googleMap';
+const REACT_APP_GOOGLE_MAPS_KEY = process.env.REACT_APP_GOOGLE_MAPS_KEY
+
 
 const DatePickerComponent = ({ selectedDate, onDateChange }) => {
     const [startDate, setStartDate] = useState(null);
@@ -21,16 +24,21 @@ const DatePickerComponent = ({ selectedDate, onDateChange }) => {
     );
 };
 
+
+
 const PostAccommodo = () => {
 
     const { user } = useAuth();
     const history = useHistory();
+    const autoCompleteRef = useRef(null);
+    const googleAutoComplete = useRef(null);
+    const [query, setQuery] = useState("");
 
-    useEffect(() => {
-        if (!user) {
-            history.push('/login');
-        }
-    }, [user, history]);
+    // useEffect(() => {
+    //     if (!user) {
+    //         history.push('/login');
+    //     }
+    // }, [user, history]);
 
     const [formFields, setFormFields] = useState({
         streetName: '',
@@ -58,9 +66,69 @@ const PostAccommodo = () => {
         colleges: [],
         store: [],
         fastFood: [],
-        roomSharingNumber: 0
+        roomSharingNumber: 0,
+        userID: null,
+        location: {
+            lat: null,
+            lng: null
+        }
     });
 
+    //places start
+    const loadScript = (url, callback) => {
+        let script = document.createElement("script");
+        script.type = "text/javascript";
+
+        if (script.readyState) {
+            script.onreadystatechange = function () {
+                if (script.readyState === "loaded" || script.readyState === "complete") {
+                    script.onreadystatechange = null;
+                    callback();
+                }
+            };
+        } else {
+            script.onload = () => callback();
+        }
+
+        script.src = url;
+        document.getElementsByTagName("head")[0].appendChild(script);
+    };
+
+    const handleScriptLoad = (updateQuery, autoCompleteRef) => {
+        googleAutoComplete.current = new window.google.maps.places.Autocomplete(
+            autoCompleteRef.current,
+            {
+                componentRestrictions: { country: "IE" },
+            }
+        );
+
+        googleAutoComplete.current.addListener("place_changed", () => {
+            handlePlaceSelect(updateQuery);
+        });
+    };
+
+    const handlePlaceSelect = async (updateQuery) => {
+        const addressObject = googleAutoComplete.current.getPlace();
+
+        const query = addressObject.formatted_address;
+        updateQuery(query);
+        console.log({ query });
+
+        const latLng = {
+            lat: addressObject?.geometry?.location?.lat(),
+            lng: addressObject?.geometry?.location?.lng(),
+        };
+
+        setFormFields(prevFields => ({
+            ...prevFields,
+            streetName: query, // Update street name
+            location: latLng // Update location
+        }));
+
+    };
+    //places end
+
+    console.log(formFields.location);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormFields({
@@ -199,6 +267,21 @@ const PostAccommodo = () => {
     };
 
 
+    useEffect(() => {
+        if (!user) {
+            history.push('/login');
+        } else {
+            setFormFields(prevFields => ({
+                ...prevFields,
+                userID: user.user._id
+            }));
+            loadScript(
+                `https://maps.googleapis.com/maps/api/js?key=${REACT_APP_GOOGLE_MAPS_KEY}&libraries=places`,
+                () => handleScriptLoad(setQuery, autoCompleteRef)
+            );
+        }
+    }, [user, history]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -206,6 +289,7 @@ const PostAccommodo = () => {
             ...formFields,
             fromDate: formFields.fromDate ? formFields.fromDate.toISOString().split('T')[0] : null,
             toDate: formFields.toDate ? formFields.toDate.toISOString().split('T')[0] : null,
+            userID: user.user._id
         };
 
         try {
@@ -223,10 +307,13 @@ const PostAccommodo = () => {
 
             const result = await response.json();
             console.log('Success:', result);
+            history.push('/');
         } catch (error) {
             console.error('Error:', error);
         }
     };
+
+
 
     return (
         <section className="contact">
@@ -247,16 +334,13 @@ const PostAccommodo = () => {
                             <div className="col-lg-12">
                                 <div className="row mt-5">
                                     <legend>
-                                        <h3>Address</h3>
+                                        <h3>Accommodation Address</h3>
                                     </legend>
                                     <div className="col-lg-4">
-                                        <label>Street Name *</label>
+                                        <label>Address</label>
                                         <input type="text"
-                                            name="streetName"
                                             className="inp-contact"
-                                            value={formFields.streetName}
-                                            onChange={handleInputChange}
-                                            required />
+                                        />
                                     </div>
                                     <div className="col-lg-4">
                                         <label>County</label>
@@ -969,6 +1053,31 @@ const PostAccommodo = () => {
                                             name="email"
                                             value={formFields.email}
                                             onChange={handleInputChange} />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-12">
+                                <div className="row mt-5">
+                                    <legend>
+                                        <h3>Location</h3>
+                                    </legend>
+                                    <div className="search-location-input">
+                                        <div className="col-lg-6">
+                                            <label>Enter your suburb or EIRCODE</label>
+                                            <input
+                                                ref={autoCompleteRef}
+                                                className="form-control inp-contact"
+                                                name='streetName'
+                                                // onChange={(event) => setQuery(event.target.value)}
+                                                onChange={handleInputChange}
+                                                placeholder="Search Places ..."
+                                                // value={query}
+                                                value={formFields.streetName}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-6">
+                                        <MapComponent selectedLocation={formFields.location} />
                                     </div>
                                 </div>
                             </div>

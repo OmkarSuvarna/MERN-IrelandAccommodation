@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { faHeart as fasFaHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as farFaHeart } from '@fortawesome/free-regular-svg-icons';
 
 const FlatItem = ({ data }) => {
+
   const handleClick = () => {
     localStorage.setItem('flatId', data._id);
   };
@@ -41,9 +42,26 @@ const FlatItem = ({ data }) => {
 
   const [isHeartFilled, setIsHeartFilled] = useState(false);
 
+  useEffect(() => {
+    const shortlist = JSON.parse(localStorage.getItem('shortlist')) || [];
+    setIsHeartFilled(shortlist.includes(data._id));
+  }, [data._id]);
+
+  // const toggleHeart = () => {
+  //   setIsHeartFilled(!isHeartFilled);
+  // };
+
   const toggleHeart = () => {
+    let shortlist = JSON.parse(localStorage.getItem('shortlist')) || [];
+    if (shortlist.includes(data._id)) {
+      shortlist = shortlist.filter(id => id !== data._id);
+    } else {
+      shortlist.push(data._id);
+    }
+    localStorage.setItem('shortlist', JSON.stringify(shortlist));
     setIsHeartFilled(!isHeartFilled);
   };
+
 
   const iconStyle = {
     color: isHeartFilled ? 'red' : 'initial',
@@ -63,8 +81,7 @@ const FlatItem = ({ data }) => {
             <i onClick={toggleHeart} className="fas heart-shortlisted">
               <FontAwesomeIcon
                 icon={isHeartFilled ? fasFaHeart : farFaHeart}
-                style={iconStyle}
-                onClick={toggleHeart} />
+                style={{ color: isHeartFilled ? 'red' : 'initial', cursor: 'pointer' }} />
             </i>
           </div>
           <div className="d-flex justify-content-between">
@@ -95,7 +112,8 @@ const FlatItem = ({ data }) => {
               state: { data }
             }}
               className="item-title"
-              onClick={handleClick}>
+              onClick={handleClick}
+            >
               <button className="btn btn-detail">View</button>
             </Link>
           </div>

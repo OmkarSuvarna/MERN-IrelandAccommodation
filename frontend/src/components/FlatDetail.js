@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import ImageGallery from 'react-image-gallery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faStore, faBurger, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
+import MapComponent from './googleMap';
 
 import image1 from '../images/1.jpg';
 import image2 from '../images/3.jpg';
@@ -80,17 +81,12 @@ const FlatDetail = () => {
         colleges,
         store,
         fastFood,
-        roomSharingNumber
-
-        // durationType,
-        // furnished,
-        // kitchen,
-        // livingRoom,
-        // nearby,
-        // billsIncluded,
-        // roomSharing,
-        // bills,
+        roomSharingNumber,
+        userID
     } = flatData;
+
+    const { lat, lng } = flatData.location || { lat: null, lng: null };
+    const mapLocation = { lat, lng };
 
     function formatDate(isDateString) {
         const dateObj = new Date(isDateString);
@@ -215,7 +211,8 @@ const FlatDetail = () => {
                                 </div>
                                 <div className="fd-item">
                                     <h4>Maps</h4>
-                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15105200.564429!2d37.91245092855647!3d38.99130948591772!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14b0155c964f2671%3A0x40d9dbd42a625f2a!2zVMO8cmtpeWU!5e0!3m2!1str!2str!4v1630158674074!5m2!1str!2str" width="100%" height="450" loading="lazy"></iframe>
+                                    <MapComponent selectedLocation={mapLocation} />
+                                    {/* <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15105200.564429!2d37.91245092855647!3d38.99130948591772!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14b0155c964f2671%3A0x40d9dbd42a625f2a!2zVMO8cmtpeWU!5e0!3m2!1str!2str!4v1630158674074!5m2!1str!2str" width="100%" height="450" loading="lazy"></iframe> */}
                                 </div>
                             </div>
                             <div className="col-lg-4">

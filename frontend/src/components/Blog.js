@@ -2,67 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import BlogItem from "./BlogItem"
-
-
-import image1 from '../images/1.jpg';
-import image2 from '../images/2.jpg';
-import image3 from '../images/3.jpg';
-import image4 from '../images/4.jpg';
-import image5 from '../images/5.jpg';
-import image6 from '../images/6.jpg';
-
-const Dummyitems = [
-    {
-        "location": "Phibsborough, Dublin 07",
-        "accommodationType": "Permanent Accommodation",
-        "rent": "€500",
-        "deposit": "€500",
-        "billsIncluded": "No",
-        "availableFrom": "1st Dec",
-        "status": "Verified",
-        "image": image1
-    },
-    {
-        "location": "Ballsbridge, Dublin 04",
-        "accommodationType": "Permanent Accommodation",
-        "rent": "€650",
-        "deposit": "€650",
-        "billsIncluded": "Yes",
-        "availableFrom": "27 Dec - 30th Feb",
-        "status": "Not Verified",
-        "image": image2
-    },
-    {
-        "location": "Clontarf, Dublin 03",
-        "accommodationType": "Permanent Accommodation",
-        "rent": "€700",
-        "deposit": "€500",
-        "billsIncluded": "Yes",
-        "availableFrom": "15 Dec",
-        "status": "Not Verified",
-        "image": image3
-    },
-    {
-        "location": "Citywest, Dublin 24",
-        "accommodationType": "Permanent Accommodation",
-        "rent": "€600",
-        "deposit": "€500",
-        "billsIncluded": "Yes",
-        "availableFrom": "30 Dec",
-        "status": "Not Verified",
-        "image": image6
-    }
-]
+import FlatItem from "./FlatItem"
 
 const Blog = () => {
     const { user } = useAuth();
     const history = useHistory();
+    const [items, setItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (!user) {
-            history.push('/login');
-        }
-    }, [user, history]);
+        const fetchItems = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/accommodations');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                const shortlist = JSON.parse(localStorage.getItem('shortlist')) || [];
+                const filteredItems = data.filter(item => shortlist.includes(item._id));
+                setItems(filteredItems);
+            } catch (error) {
+                console.error('Failed to fetch items:', error);
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchItems();
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
+
+    const hasItems = items.length > 0;
+
     return (
         <section className="blog">
             <div className="page-top">
@@ -87,9 +62,18 @@ const Blog = () => {
                         <BlogItem link="blog-7" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit"/>
                         <BlogItem link="blog-8" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit"/>
                         <BlogItem link="blog-9" title="Lorem ipsum dolor sit amet, consectetur adipiscing elit"/> */}
-                        {Dummyitems.map((item, index) => (
+                        {/* {Dummyitems.map((item, index) => (
                             <BlogItem key={index} data={item} />
-                        ))}
+                        ))} */}
+                        {hasItems ? (
+                            items.map((item, index) => (
+                                <FlatItem key={index} data={item} />
+                            ))
+                        ) : (
+                            <div className="no-data-message">
+                                <h1 className='shortlistEmpty'>No items in your shortlist. Start adding some!</h1>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

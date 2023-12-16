@@ -12,6 +12,9 @@ import Profile from './components/Profile';
 import PostAccommodo from "./components/PostAccommodo"
 import References from './components/References';
 import Signup from './components/SignUp';
+import Messages from './components/Messages';
+import Admin from './components/Admin';
+import googleMap from './components/googleMap';
 // import Contact from "./components/Contact"
 import { AuthProvider } from './components/AuthContext';
 
@@ -26,13 +29,17 @@ function App() {
           <Route path="/postaccommodo" component={PostAccommodo}></Route>
           <Route path="/about" component={About}></Route>
           <Route path="/shortlisted" exact component={Blog}></Route>
-          <AuthProvider><Route path="/profile" exact component={Profile}></Route></AuthProvider>
+          <Route path="/profile" exact component={Profile}></Route>
           <Route path="/blog/:id" component={BlogDetail}></Route>
           <Route path="/login" component={Login}></Route>
           <Route path="/accommododetails/:slug" component={FlatDetail}></Route>
           <Route path="/signup" component={Signup}></Route>
+          <Route path="/contact" component={googleMap}></Route>
+          <Route path="/messages" component={Messages}></Route>
+          <Route path="/admin" component={Admin}></Route>
           {/* <Route path="/contact"  component={Contact}></Route> */}
-          <Route path="/contact" component={References}></Route>
+          {/* <AuthProvider> <Route path="/messages" component={Messages}></Route></AuthProvider> */}
+          {/* <AuthProvider><Route path="/profile" exact component={Profile}></Route></AuthProvider> */}
           <Footer />
         </AuthProvider>
       </div>

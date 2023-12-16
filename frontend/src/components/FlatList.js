@@ -19,9 +19,11 @@ const FlatList = () => {
   const [error, setError] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(6);
+  const [itemsPerPage, setItemsPerPage] = useState(9);
 
   const [durationFilter, setDurationFilter] = useState("");
+  const [accommodationForFilter, setAccommodationForFilter] = useState("");
+  const [suitableForFilter, setSuitableForFilter] = useState("");
 
   // const initializeSlider = () => {
   //   $("#slider-range").slider({
@@ -76,14 +78,30 @@ const FlatList = () => {
     setDurationFilter(event.target.value);
   };
 
+  const handleAccommodationForChange = (event) => {
+    setAccommodationForFilter(event.target.value);
+  };
+
+  const handleSuitableForChange = (event) => {
+    setSuitableForFilter(event.target.value);
+  };
+
+  // const filteredAccommodations = accommodations.filter((item) => {
+  //   if (durationFilter === "") return true;
+  //   return item.durationType === durationFilter;
+  // });
+
+
   const filteredAccommodations = accommodations.filter((item) => {
-    if (durationFilter === "") return true; // No filter applied
-    return item.durationType === durationFilter; // Replace 'item.duration' with the actual property name in your data
+    return (durationFilter === "" || item.durationType === durationFilter) &&
+      (accommodationForFilter === "" || item.lookingFor === accommodationForFilter) &&
+      (suitableForFilter === "" || item.sutiableFor === suitableForFilter); // Updated filter logic
   });
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = accommodations.slice(indexOfFirstItem, indexOfLastItem);
+  // const currentItems = accommodations.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredAccommodations.slice(indexOfFirstItem, indexOfLastItem);
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
 
@@ -107,28 +125,35 @@ const FlatList = () => {
           <div className="row filter-row">
             <div className="col-lg-3">
               <select className="filter-home-page"
-                onChange={handleDurationChange} // Attach the handler
-                value={durationFilter} // Controlled component
-              >
-                <option value="">Duration</option>
+                onChange={handleDurationChange}
+                value={durationFilter}>
+                <option value="" disabled selected>Duration</option>
+                <option value="">All</option>
                 <option value="Permanent">Permanent</option>
                 <option value="Temporary">Temporary</option>
               </select>
             </div>
             <div className="col-lg-3">
-              <select className="filter-home-page">
-                <option value="">Accommodation For</option>
-                <option value="0">Female Only</option>
-                <option value="1">Male Only</option>
-                <option value="2">Female/Male</option>
+              <select className="filter-home-page"
+                onChange={handleAccommodationForChange}
+                value={accommodationForFilter}>
+                <option value="" disabled selected>Accommodation For</option>
+                <option value="">All</option>
+                <option value="Females Only">Female Only</option>
+                <option value="Males Only">Male Only</option>
+                <option value="No Preference">Female/Male</option>
               </select>
             </div>
             <div className="col-lg-3">
-              <select className="filter-home-page">
-                <option value="">Sutiable For</option>
-                <option value="0">Students</option>
-                <option value="1">Working Professionals</option>
-                <option value="2">Any</option>
+              <select className="filter-home-page"
+                onChange={handleSuitableForChange}
+                value={suitableForFilter}>
+                <option value="" disabled selected
+                >Sutiable For</option>
+                <option value="">All</option>
+                <option value="Students">Students</option>
+                <option value="Working Professionals">Working Professionals</option>
+                <option value="Students & Working Professionals">Students & Working Professionals</option>
               </select>
             </div>
             <div className="col-lg-3">
@@ -153,7 +178,8 @@ const FlatList = () => {
           ))}
         </div>
         <div className="pagination">
-          {[...Array(Math.ceil(accommodations.length / itemsPerPage)).keys()].map(number => (
+          {/* {[...Array(Math.ceil(accommodations.length / itemsPerPage)).keys()].map(number => ( */}
+          {[...Array(Math.ceil(filteredAccommodations.length / itemsPerPage)).keys()].map(number => (
             <button key={number} onClick={() => paginate(number + 1)}>
               {number + 1}
             </button>

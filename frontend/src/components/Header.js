@@ -9,13 +9,15 @@ const Header = () => {
   const handleLogout = () => {
     logout(() => history.push('/'));
   };
+
+  const isAdmin = user && user.user.email === 'om.dev@gmail.com';
   return (
     <div className="header">
-      <div className="container">
+      <div className="container minWidthContainer">
         <nav className="navbar navbar-expand-lg navbar-light">
           <div className="container-fluid">
             <Link className="navbar-brand" to="/">
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center headerMainPage">
                 <i className="fas fa-home"></i>
                 <span className="ms-2">Dublin Accommodations</span>
               </div>
@@ -38,6 +40,13 @@ const Header = () => {
                     Home
                   </Link>
                 </li>
+                {isAdmin && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/admin">
+                      Admin Dashboard
+                    </Link>
+                  </li>
+                )}
                 <li className="nav-item">
                   <Link className="nav-link" to="/shortlisted">
                     Short Listed
@@ -48,6 +57,13 @@ const Header = () => {
                     Post Accommodation
                   </Link>
                 </li>
+                {user && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/messages">
+                      Messages
+                    </Link>
+                  </li>
+                )}
                 {user && (
                   <li className="nav-item">
                     <Link className="nav-link" to="/profile">

@@ -4,13 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle, faFacebookF } from '@fortawesome/free-brands-svg-icons';
 import '../App.css';
 import { useAuth } from './AuthContext';
-import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [recaptchaValue, setRecaptchaValue] = useState('');
 
   const auth = useAuth();
   const history = useHistory();
@@ -18,18 +16,13 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (!recaptchaValue) {
-      setError('Please complete the reCAPTCHA');
-      return;
-    }
-
     try {
       const response = await fetch('http://localhost:5000/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, recaptchaValue }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
@@ -76,13 +69,6 @@ const Login = () => {
             <div className="form-link">
               <a href="#" className="forgot-pass">Forgot password?</a>
             </div>
-            <div className='recaptcha-login'>
-              <ReCAPTCHA
-                sitekey="6Le6AyEpAAAAAM_4wftidRsLEXv4YVJ6vHpapwVI"
-                onChange={(value) => setRecaptchaValue(value)}
-              />
-            </div>
-
             <div className="field button-field">
               <button type="submit">Login</button>
             </div>

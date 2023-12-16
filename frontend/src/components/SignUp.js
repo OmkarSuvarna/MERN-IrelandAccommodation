@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import '../App.css';
 import { useHistory } from 'react-router-dom';
-
-
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Signup = () => {
-  // const [name, setName] = useState('');
-  // const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const history = useHistory();
+  const [captchaValue, setCaptchaValue] = useState(null);
+  const recaptchaRef = React.createRef();
 
   const [formFields, setFormFields] = useState({
     fname: '',
@@ -27,6 +26,7 @@ const Signup = () => {
       [name]: value,
     });
   };
+
   const handlePasswordChange = (e) => {
     setFormFields({
       ...formFields,
@@ -50,8 +50,10 @@ const Signup = () => {
       return;
     }
 
-    setError('');
-
+    if (!captchaValue) {
+      setError('Please verify that you are not a robot.');
+      return;
+    }
     const formattedData = {
       ...formFields
     };
@@ -76,6 +78,10 @@ const Signup = () => {
       console.error('Error during signup:', error.message);
       setError(error.message);
     }
+  };
+
+  const onCaptchaChange = (value) => {
+    setCaptchaValue(value);
   };
 
   return (
@@ -118,16 +124,17 @@ const Signup = () => {
               />
             </div>
 
-            <div className="field input-field">
+            {/* <div className="field input-field" style={{ color: 'black', border: '1px solid #CACACA' }}>
               <select
                 className="input signup-selection"
                 name="profession"
                 value={formFields.profession}
-                onChange={handleInputChange}>
-                <option value="student">Student</option>
-                <option value="workingProfessional">Working Professional</option>
+                onChange={handleInputChange} style={{ color: 'black' }}>
+                <option value="" disabled selected>Profile</option>
+                <option value="Student">Student</option>
+                <option value="Working Professional">Working Professional</option>
               </select>
-            </div>
+            </div> */}
 
 
             <div className="field input-field">
@@ -164,6 +171,16 @@ const Signup = () => {
                 required />
               <i className='bx bx-hide eye-icon'></i>
             </div>
+
+            <div className="field button-field">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="YOUR_RECAPTCHA_SITE_KEY"
+                onChange={onCaptchaChange}
+              />
+              <button type="submit">Signup</button>
+            </div>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
 
             <div className="field button-field">
               <button type="submit">Signup</button>

@@ -27,7 +27,12 @@ const accommodationSchema = new mongoose.Schema({
   contactNumber: String,
   email: String,
   description: String,
-  image: [String]
+  image: [String],
+  location: {
+    lat: Number,
+    lng: Number
+  },
+  userID: String
 });
 
 const accommodationModel = mongoose.model('Accommodation', accommodationSchema);

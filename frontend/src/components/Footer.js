@@ -16,7 +16,7 @@ const Footer = () => {
                             <div className="footer-social-item"> <i className="fab fa-instagram"></i></div>
                         </div>
                     </div>
-                    <div className="col-lg-3 col-md-6">
+                    <div className="col-lg-3 col-md-6 footerContainerMain">
                         <p className="footer-title">Menu</p>
                         <ul className="footer-ul">
                             <li>Home</li>
@@ -25,7 +25,7 @@ const Footer = () => {
                             <li>Profile</li>
                         </ul>
                     </div>
-                    <div className="col-lg-3 col-md-6">
+                    <div className="col-lg-3 col-md-6 footerContainerMain">
                         <div>
                             <p className="footer-title">Extras</p>
                             <ul className="footer-ul">
@@ -37,7 +37,7 @@ const Footer = () => {
                         </div>
                     </div>
 
-                    <div className="col-lg-3 col-md-6">
+                    <div className="col-lg-3 col-md-6 footerContainerMain">
                         <p className="footer-title">Contact</p>
                         <ul className="footer-ul">
                             <li className="d-flex">
